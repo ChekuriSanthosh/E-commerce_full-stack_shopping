@@ -1,0 +1,33 @@
+
+<%- include('./partials/header') %>
+
+<div class="min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <div class="flex-1 flex justify-center items-center">
+            <img src="<%= user.picture %>" alt="User Photo" class="w-32 h-32 rounded-full border-2 border-gray-300 object-cover">
+        </div>
+        <div class="flex-1">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">User Details</h2>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium"><b>Full Name</b></label>
+            <div class="mt-1 text-gray-900"><%= user.fullname %></div>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium"><b>Email</b></label>
+            <div class="mt-1 text-gray-900"><%= user.email %></div>
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 font-medium"><b>Phone Number</b></label>
+            <div class="mt-1 text-gray-900"><%= user.contact %></div>
+        </div>
+        <div class="flex justify-between">
+            <a href="/cart" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Cart</a>
+            <a href="/users/logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Logout</a>
+        </div>
+    </div>
+    
+</div>
+</div>
+
+
+<%- include('./partials/footer') %>

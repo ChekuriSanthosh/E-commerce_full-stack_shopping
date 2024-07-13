@@ -12,11 +12,6 @@ const ownerSchema= mongoose.Schema({
         type: Array,
         default:[]
     },
-    isadmin: Boolean,
-    orders:{
-        type:Array,
-        default:[]
-    },
     picture: String,
     gstin: String,
 });
