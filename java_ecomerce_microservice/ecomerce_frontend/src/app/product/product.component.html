@@ -1,0 +1,145 @@
+<div class="product-container">
+  <!-- Navbar -->
+  <mat-toolbar color="primary" class="navbar">
+    <span style="color: white;">Product Management</span>
+    <div class="navbar-actions">
+      <button mat-icon-button (click)="showAddForm = !showAddForm" matTooltip="Add Product">
+        <mat-icon style="color: white;">add</mat-icon>
+      </button>
+      <button mat-icon-button (click)="loadProducts()" matTooltip="View Products">
+        <mat-icon style="color: white;">view_list</mat-icon>
+      </button>
+      <button mat-icon-button (click)="logout()" matTooltip="Logout">
+        <mat-icon style="color: white;">exit_to_app</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search products</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (keyup)="searchProducts()" placeholder="Search by ID, name, or category">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="category-filter">
+      <mat-label>Filter by category</mat-label>
+      <mat-select (valueChange)="filterProducts($event)">
+        <mat-option [value]="">All Categories</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{category}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Add Product Form -->
+  <mat-card *ngIf="showAddForm" class="add-product-form">
+    <mat-card-header>
+      <mat-card-title>{{ isEditing ? 'Edit' : 'Add New' }} Product</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" formControlName="price">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Quantity</mat-label>
+          <input matInput type="number" formControlName="quantityAvailable">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <input matInput formControlName="category">
+        </mat-form-field>
+
+        <div class="file-upload">
+          <label for="product-image">Product Image</label>
+          <input 
+            type="file" 
+            id="product-image"
+            (change)="onFileSelected($event)" 
+            [accept]="acceptedImageTypes"
+            class="file-input">
+          <small class="file-hint">Accepted formats: JPG, JPEG, PNG, WEBP, GIF</small>
+          <div *ngIf="productForm.get('imageUrl')?.value" class="image-preview">
+            <p>Selected image: {{productForm.get('imageUrl')?.value}}</p>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button 
+                  color="primary" 
+                  type="submit" 
+                  [disabled]="!productForm.valid || loading">
+            {{loading ? (isEditing ? 'Updating...' : 'Adding...') : (isEditing ? 'Update' : 'Add') }} Product
+          </button>
+          
+          <button *ngIf="isEditing" 
+                  mat-raised-button 
+                  type="button"
+                  (click)="resetForm()"
+                  [disabled]="loading">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Products Grid -->
+  <div class="products-grid">
+    <mat-card *ngFor="let product of filteredProducts" 
+              class="product-card"
+              [class.sold-out]="product.quantityAvailable === 0">
+      <div class="product-image-container">
+        <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+        <div class="sold-out-overlay" *ngIf="product.quantityAvailable === 0">
+          <span class="sold-out-text">Sold Out</span>
+        </div>
+      </div>
+      <mat-card-content>
+        <h3>{{product.name}}</h3>
+        <p>{{product.description}}</p>
+        <p class="price">₹{{product.price}}</p>
+        <p>
+          Stock: {{product.quantityAvailable}}
+          <span class="stock-status" 
+                [class.in-stock]="product.quantityAvailable > 5"
+                [class.low-stock]="product.quantityAvailable > 0 && product.quantityAvailable <= 5"
+                [class.sold-out]="product.quantityAvailable === 0">
+            {{product.quantityAvailable === 0 ? 'Sold Out' : 
+              product.quantityAvailable <= 5 ? 'Low Stock' : 'In Stock'}}
+          </span>
+        </p>
+        <p class="category">{{product.category}}</p>
+      </mat-card-content>
+      <div class="card-actions">
+        <button mat-icon-button 
+                color="primary" 
+                (click)="editProduct(product)"
+                [disabled]="product.quantityAvailable === 0">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button 
+                color="warn" 
+                (click)="deleteProduct(product.productId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>

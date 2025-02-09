@@ -1,0 +1,249 @@
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 20px;
+  }
+  
+  .auth-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+  }
+  
+  .auth-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  /* Toggle Buttons for Login/Register */
+  .auth-toggle {
+    position: relative;
+    display: flex;
+    background: #f5f5f5;
+    border-radius: 30px;
+    padding: 4px;
+    margin-bottom: 20px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .auth-toggle button {
+    flex: 1;
+    padding: 8px 16px;
+    border-radius: 25px;
+    border: none;
+    background: none;
+    color: #666;
+    font-weight: 500;
+    z-index: 1;
+    transition: color 0.3s ease;
+  }
+  
+  .auth-toggle button.active {
+    color: #fff;
+  }
+  
+  .slider {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    bottom: 4px;
+    width: calc(50% - 4px);
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 25px;
+    transition: transform 0.3s ease;
+  }
+  
+  .slider.slide-right {
+    transform: translateX(100%);
+  }
+  
+  /* Forms Container */
+  .forms-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Forms Fix - Each form now takes full width */
+  .forms {
+    display: flex;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .forms.slide-right {
+    transform: translateX(0%);
+  }
+  
+  /* Each form takes full width */
+  .form-fields {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .auth-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Form Fields - Rounded Borders & Better UI */
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px; /* Rounded Borders */
+  }
+  
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0.75em;
+    border-radius: 10px; /* Rounded Corners */
+  }
+  
+  :host ::ng-deep .mat-form-field-wrapper {
+    margin: 0.5em 0;
+  }
+  
+  /* Increase input text size */
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 1em 0;
+    font-size: 16px;
+  }
+  
+  /* Make select dropdown more prominent */
+  :host ::ng-deep .mat-select-value {
+    font-size: 16px;
+  }
+  
+  /* Validation Messages */
+  .error-message {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #f44336;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Focus Effects */
+  :host ::ng-deep .mat-form-field.mat-focused .mat-form-field-outline {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 2px rgba(30, 60, 114, 0.1);
+  }
+  
+  :host ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-outline {
+    background-color: rgba(244, 67, 54, 0.05);
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  
+  /* Login & Register Button Styles */
+  button[mat-raised-button] {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  /* Primary Button - Login */
+  .btn-login {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+  }
+  
+  .btn-login:hover {
+    background: linear-gradient(135deg, #163a66 0%, #234e86 100%);
+    transform: translateY(-2px);
+  }
+  
+  /* Secondary Button - Register */
+  .btn-register {
+    background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+    color: white;
+  }
+  
+  .btn-register:hover {
+    background: linear-gradient(135deg, #e05b00 0%, #d4086b 100%);
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .auth-card {
+      max-width: 95%;
+      padding: 1.5rem;
+    }
+  
+    .form-fields {
+      padding: 0.5rem;
+    }
+  
+    .auth-toggle {
+      max-width: 100%;
+    }
+  
+    button[mat-raised-button] {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .auth-card {
+      padding: 1.25rem;
+      margin: 0.5rem;
+    }
+  
+    .auth-toggle {
+      max-width: 250px;
+    }
+  
+    .form-fields {
+      padding: 0 0.5rem;
+    }
+  
+    .auth-toggle button {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  
+    :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 0.75em 0;
+      font-size: 14px;
+    }
+  }
+  

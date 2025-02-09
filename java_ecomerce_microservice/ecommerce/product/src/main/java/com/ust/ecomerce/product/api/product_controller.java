@@ -23,6 +23,11 @@ public class product_controller {
         return productService.addproduct(p);
     }
 
+    @PutMapping("/editproduct/{id}")
+    public product editproduct(@RequestBody product p,@PathVariable long id) {
+        return productService.editproduct(p,id);
+    }
+
     @GetMapping("/viewproduct/{id}")
     product viewproduct(@PathVariable long id){
         return productService.viewproduct(id);

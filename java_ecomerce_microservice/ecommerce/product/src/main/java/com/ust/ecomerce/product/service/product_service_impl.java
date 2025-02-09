@@ -24,6 +24,21 @@ public class product_service_impl implements product_service{
     }
 
     @Override
+    public product editproduct(product p, long id) {
+        product res=repo.findById(id).orElse(null);
+        if(res==null){
+            throw new RuntimeException("Product Not Found");
+        }
+        res.setCategory(p.getCategory());
+        res.setName(p.getName());
+        res.setDescription(p.getDescription());
+        res.setPrice(p.getPrice());
+        res.setImageUrl(p.getImageUrl());
+        res.setPrice(p.getPrice());
+        return repo.save(res);
+    }
+
+    @Override
     public void removeproduct(long id) {
         if(repo.existsById(id)){
             repo.deleteById(id);

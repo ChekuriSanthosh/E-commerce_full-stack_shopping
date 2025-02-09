@@ -1,0 +1,107 @@
+<div class="user-container">
+  <!-- Navbar -->
+  <mat-toolbar color="primary" class="navbar">
+    <span style="color: white;">Welcome, {{user?.name || 'User'}}</span>
+    <div class="navbar-actions">
+      <button mat-button [class.active]="currentView === 'main'" (click)="currentView = 'main'">
+        <mat-icon style="color: white;">store</mat-icon>
+        <span style="color: white;">Shop</span>
+      </button>
+      <button mat-button [class.active]="currentView === 'cart'" (click)="currentView = 'cart'">
+        <mat-icon matBadge="{{user?.cartItems?.length || 0}}" matBadgeColor="warn" style="color: white;">shopping_cart</mat-icon>
+        <span style="color: white;">Cart</span>
+      </button>
+      <button mat-button [class.active]="currentView === 'orders'" (click)="currentView = 'orders'">
+        <mat-icon style="color: white;">history</mat-icon>
+        <span style="color: white;">Orders</span>
+      </button>
+      <button mat-button (click)="logout()">
+        <mat-icon style="color: white;">exit_to_app</mat-icon>
+        <span style="color: white;">Logout</span>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- Main Shop View -->
+  <div *ngIf="currentView === 'main'" class="main-content">
+    <!-- Search and Filter -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search products</mat-label>
+        <input matInput [formControl]="searchControl" placeholder="Search by name or category">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="category-filter">
+        <mat-label>Filter by category</mat-label>
+        <mat-select [(value)]="selectedCategory" (valueChange)="filterByCategory($event)">
+          <mat-option value="">All Categories</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{category}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Products by Category -->
+    <div class="categories-container">
+      <ng-container *ngFor="let category of groupedProducts | keyvalue">
+        <div class="category-section" *ngIf="category.value.length > 0">
+          <div class="category-header">
+            <mat-icon>{{getCategoryIcon(category.key)}}</mat-icon>
+            <h2>{{category.key}}</h2>
+          </div>
+          
+          <div class="products-grid">
+            <mat-card *ngFor="let product of category.value" class="product-card" 
+                      [class.sold-out]="product.quantityAvailable === 0"
+                      (click)="openProductDetails(product)">
+              <div class="product-image-container">
+                <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+                <div class="sold-out-overlay" *ngIf="product.quantityAvailable === 0">
+                  <span class="sold-out-text">Sold Out</span>
+                </div>
+              </div>
+              <mat-card-content>
+                <div class="product-details">
+                  <h3 class="product-name">{{product.name}}</h3>
+                  <p class="product-description">{{product.description | slice:0:100}}...</p>
+                  <div class="price-stock-container">
+                    <p class="price">₹{{product.price}}</p>
+                    <span class="stock-status" 
+                          [class.in-stock]="product.quantityAvailable > 5"
+                          [class.low-stock]="product.quantityAvailable > 0 && product.quantityAvailable <= 5"
+                          [class.sold-out]="product.quantityAvailable === 0">
+                      {{product.quantityAvailable === 0 ? 'Sold Out' : 
+                        product.quantityAvailable <= 5 ? 'Low Stock' : 'In Stock'}}
+                    </span>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Cart View -->
+  <app-cart *ngIf="currentView === 'cart'" 
+            [user]="user"
+            (cartUpdated)="loadUserData()">
+  </app-cart>
+
+  <!-- Orders View -->
+  <app-orders *ngIf="currentView === 'orders'" 
+              [boughtItems]="user?.boughtItems || []">
+  </app-orders>
+</div>
+
+<!-- Product Detail Dialog -->
+<ng-template #productDetailDialog>
+  <app-product-detail 
+    [product]="selectedProduct" 
+    [user]="user"
+    (actionComplete)="loadUserData()">
+  </app-product-detail>
+</ng-template>

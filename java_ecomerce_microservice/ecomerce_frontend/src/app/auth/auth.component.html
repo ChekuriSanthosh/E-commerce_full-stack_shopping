@@ -1,0 +1,110 @@
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <div class="auth-header">
+      <div class="auth-toggle">
+        <button mat-button [class.active]="authType === 'login'" (click)="setAuthType('login')">Login</button>
+        <button mat-button [class.active]="authType === 'register'" (click)="setAuthType('register')">Register</button>
+        <div class="slider" [class.slide-right]="authType === 'register'"></div>
+      </div>
+    </div>
+
+    <div class="forms-container">
+      <div class="forms" [class.slide-right]="authType === 'register'">
+        <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="auth-form">
+          <!-- Login Form -->
+          <div *ngIf="authType === 'login'" class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="username" type="email">
+              <mat-error *ngIf="authForm.get('username')?.hasError('required')">
+                <span class="error-message">Email is required</span>
+              </mat-error>
+              <mat-error *ngIf="authForm.get('username')?.hasError('email')">
+                <span class="error-message">Invalid email format</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" type="password">
+              <mat-error *ngIf="authForm.get('password')?.hasError('required')">
+                <span class="error-message">Password is required</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role">
+                <mat-option value="USER">User</mat-option>
+                <mat-option value="ADMIN">Admin</mat-option>
+              </mat-select>
+              <mat-error *ngIf="authForm.get('role')?.hasError('required')">
+                <span class="error-message">Role is required</span>
+              </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="!authForm.valid || loading">
+              {{ loading ? 'Logging in...' : 'Login' }}
+            </button>
+          </div>
+
+          <!-- Register Form -->
+          <div *ngIf="authType === 'register'" class="form-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="name">
+              <mat-error *ngIf="authForm.get('name')?.hasError('required')">
+                <span class="error-message">Name is required</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email">
+              <mat-error *ngIf="authForm.get('email')?.hasError('required')">
+                <span class="error-message">Email is required</span>
+              </mat-error>
+              <mat-error *ngIf="authForm.get('email')?.hasError('email')">
+                <span class="error-message">Invalid email format</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" type="password">
+              <mat-error *ngIf="authForm.get('password')?.hasError('required')">
+                <span class="error-message">Password is required</span>
+              </mat-error>
+              <mat-error *ngIf="authForm.get('password')?.hasError('minlength')">
+                <span class="error-message">Password must be at least 6 characters</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Address</mat-label>
+              <textarea matInput formControlName="address" rows="2"></textarea>
+              <mat-error *ngIf="authForm.get('address')?.hasError('required')">
+                <span class="error-message">Address is required</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Phone Number</mat-label>
+              <input matInput formControlName="phoneNumber">
+              <mat-error *ngIf="authForm.get('phoneNumber')?.hasError('required')">
+                <span class="error-message">Phone number is required</span>
+              </mat-error>
+              <mat-error *ngIf="authForm.get('phoneNumber')?.hasError('pattern')">
+                <span class="error-message">Invalid phone number format</span>
+              </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="!authForm.valid || loading">
+              {{ loading ? 'Registering...' : 'Register' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-card>
+</div>
